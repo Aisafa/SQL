@@ -1,6 +1,7 @@
 package ru.netology.pages;
 
 import com.codeborne.selenide.SelenideElement;
+import ru.netology.data.AuthCode;
 import ru.netology.data.DataHelper;
 import ru.netology.pages.DashboardPage;
 
@@ -15,8 +16,8 @@ public class VerificationPage {
         codeField.shouldBe(visible);
     }
 
-    public DashboardPage validVerify(String verCode) {
-        codeField.setValue(verCode);
+    public DashboardPage validVerify(AuthCode verCode) {
+        codeField.setValue(verCode.getCode());
         verifyButton.click();
         return new DashboardPage();
     }
