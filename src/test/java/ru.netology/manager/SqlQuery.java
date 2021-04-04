@@ -4,6 +4,7 @@ import lombok.val;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import ru.netology.data.AuthCode;
+import ru.netology.data.DataHelper;
 import ru.netology.data.User;
 
 import java.sql.Connection;
@@ -13,11 +14,11 @@ import java.sql.SQLException;
 public class SqlQuery {
 
     public static User getUser() throws SQLException {
-        val usersSQL = "SELECT * FROM users;";
-        val runner = new QueryRunner();
+        var usersSQL = "SELECT * FROM users;";
+        var runner = new QueryRunner();
         User user1;
         try (
-                val conn = DriverManager.getConnection(
+                var conn = DriverManager.getConnection(
                         "jdbc:mysql://localhost:3306/app", "app", "pass"
                 );
         ) {
@@ -27,21 +28,22 @@ public class SqlQuery {
         return user1;
     }
 
-    public static AuthCode getAuthCodeFromUser() throws SQLException {
-        AuthCode code;
-        val usersSQL = "SELECT * FROM auth_codes WHERE created = (SELECT MAX(created) FROM auth_codes);";
-        val runner = new QueryRunner();
+    public static String getAuthCodeFromUser() {
+        String usersSQL = "SELECT * FROM auth_codes WHERE created = (SELECT MAX(created) FROM auth_codes);";
+        var runner = new QueryRunner();
         try (
-                val conn = DriverManager.getConnection(
+                Connection conn = DriverManager.getConnection(
                         "jdbc:mysql://localhost:3306/app", "app", "pass"
                 );
         ) {
-            code = runner.query(conn, usersSQL, new BeanHandler<>(AuthCode.class));
+            AuthCode code = runner.query(conn, usersSQL, new BeanHandler<>(AuthCode.class));
+            return code.getCode();
+        } catch (SQLException a) {
         }
-        return code;
+        return "";
     }
 
-    public static void clearTables() throws SQLException {
+    public static void clearTables() {
         var runner = new QueryRunner();
         String delUsersSQL = "DELETE FROM users;";
         String delCardsSQL = "DELETE FROM cards;";
@@ -58,7 +60,10 @@ public class SqlQuery {
             runner.update(conn, delCardsSQL);
             runner.update(conn, delAuthSQL);
             runner.update(conn, delUsersSQL);
+        } catch (SQLException a) {
+
         }
     }
 }
+
 

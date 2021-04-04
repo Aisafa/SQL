@@ -16,8 +16,8 @@ public class VerificationPage {
         codeField.shouldBe(visible);
     }
 
-    public DashboardPage validVerify(AuthCode verCode) {
-        codeField.setValue(verCode.getCode());
+    public DashboardPage validVerify(String verCode) {
+        codeField.setValue(verCode);
         verifyButton.click();
         return new DashboardPage();
     }
