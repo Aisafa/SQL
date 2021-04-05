@@ -43,7 +43,7 @@ public class SqlQuery {
         return "";
     }
 
-    public static void clearTables() {
+    public static void clearTables() throws SQLException {
         var runner = new QueryRunner();
         String delUsersSQL = "DELETE FROM users;";
         String delCardsSQL = "DELETE FROM cards;";
@@ -60,8 +60,6 @@ public class SqlQuery {
             runner.update(conn, delCardsSQL);
             runner.update(conn, delAuthSQL);
             runner.update(conn, delUsersSQL);
-        } catch (SQLException a) {
-
         }
     }
 }

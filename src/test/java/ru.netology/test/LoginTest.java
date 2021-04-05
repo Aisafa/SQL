@@ -21,13 +21,13 @@ public class LoginTest {
     @BeforeEach
     void setUp() {
         open("http://localhost:9999");
-        SqlQuery.clearTables();
     }
 
     @AfterAll
-    static void deleteTabs() {
+    static void deleteTables() throws SQLException {
         SqlQuery.clearTables();
     }
+
 
     @Test
     void shouldLogin() {
